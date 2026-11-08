@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOTRIX DieCast – Homepage</title>
+<style>
+  :root {
+    --bg: #0c0d10;
+    --surface: #15171c;
+    --surface-2: #1d2027;
+    --line: rgba(255, 255, 255, 0.09);
+    --text: #f3f1ec;
+    --muted: #9a9ca3;
+    --accent: #d8b46a;
+    --accent-2: #e04b3a;
+    --radius: 14px;
+    --wrap: 1152px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button, input { font: inherit; }
+  .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::after { content: ""; width: 40px; height: 1px; background: var(--accent); opacity: 0.6; }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, "Times New Roman", serif; font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(40px, 6vw, 72px); }
+  h2 { font-size: clamp(30px, 4vw, 44px); }
+  h3 { font-size: 20px; }
+  .muted { color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 46px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: transform .15s, background .15s, border-color .15s; }
+  .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #15120a; border-color: var(--accent); }
+  .btn-primary:hover { background: #e8c880; }
+  .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+
+  /* ---------- Header ---------- */
+  header.site { position: sticky; top: 0; z-index: 50; background: rgba(12,13,16,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; gap: 24px; }
+  .logo { display: flex; flex-direction: column; line-height: 1; }
+  .logo b { font-family: "Playfair Display", Georgia, serif; font-size: 22px; letter-spacing: .14em; color: var(--text); }
+  .logo span { font-size: 11px; letter-spacing: .3em; color: var(--accent); margin-top: 6px; text-transform: uppercase; }
+  nav.main { display: flex; gap: 26px; }
+  nav.main a { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  nav.main a:hover { color: var(--text); }
+  .header-actions { display: flex; align-items: center; gap: 16px; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--text); background: transparent; cursor: pointer; }
+  .cart-count { position: absolute; top: -4px; right: -4px; background: var(--accent-2); color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; }
+  .cart { position: relative; }
+  .menu-toggle { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: 96px 0 56px; background:
+      radial-gradient(900px 500px at 75% 30%, rgba(216,180,106,.18), transparent 60%),
+      radial-gradient(700px 500px at 10% 90%, rgba(224,75,58,.12), transparent 60%),
+      linear-gradient(180deg, #111318 0%, #0c0d10 100%); }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero h1 { margin-top: 24px; max-width: 900px; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p.lead { margin-top: 24px; max-width: 672px; color: var(--muted); font-size: 18px; }
+  .hero-ctas { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .stats { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(21,23,28,.7); backdrop-filter: blur(8px); }
+  .stat { display: flex; align-items: center; gap: 18px; padding: 22px 26px; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-ico { width: 48px; height: 48px; border-radius: 12px; background: rgba(216,180,106,.12); color: var(--accent); display: grid; place-items: center; flex-shrink: 0; }
+  .stat strong { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 26px; }
+  .stat small { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---------- Section heads ---------- */
+  section.block { padding: 88px 0; }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
+  .sec-head h2 { margin-top: 18px; }
+  .sec-head p { max-width: 440px; color: var(--muted); }
+
+  /* ---------- Categories ---------- */
+  .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .cat { display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--surface); transition: transform .2s, border-color .2s; }
+  .cat:hover { transform: translateY(-4px); border-color: rgba(216,180,106,.5); }
+  .cat-img { position: relative; height: 240px; background: linear-gradient(135deg, #2a2d36, #13151a); }
+  .cat-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(12,13,16,.9)); }
+  .cat-tag { position: absolute; top: 14px; left: 14px; z-index: 1; background: rgba(12,13,16,.8); border: 1px solid var(--line); padding: 5px 10px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; border-radius: 6px; }
+  .cat-body { padding: 18px 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .cat-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .cat-title span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .cat-body p { color: var(--muted); font-size: 14px; }
+  .cat-link { margin-top: auto; color: var(--accent); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+
+  /* ---------- Products ---------- */
+  .products { background: var(--surface); }
+  .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .product { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); overflow: hidden; display: flex; flex-direction: column; }
+  .p-img { position: relative; height: 260px; background: linear-gradient(160deg, #2b2f38, #101216); }
+  .p-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .badge { background: rgba(12,13,16,.8); border: 1px solid var(--line); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; color: var(--text); }
+  .badge.hot { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+  .wish { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: rgba(12,13,16,.8); color: var(--text); display: grid; place-items: center; cursor: pointer; }
+  .p-body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .p-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: .08em; }
+  .p-meta .stars { color: var(--accent); letter-spacing: 2px; }
+  .p-title { font-size: 17px; font-family: "Inter", system-ui, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+  .p-sub { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .p-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 6px; }
+  .price { font-family: "Playfair Display", Georgia, serif; font-size: 22px; }
+  .price s { color: var(--muted); font-size: 14px; margin-left: 6px; font-family: Inter, sans-serif; }
+  .btn-sm { height: 36px; padding: 0 14px; font-size: 11px; }
+
+  /* ---------- Promo banner ---------- */
+  .promo { position: relative; overflow: hidden; border-radius: 20px; border: 1px solid var(--line); min-height: 504px; display: flex; align-items: center;
+    background: radial-gradient(700px 400px at 80% 40%, rgba(224,75,58,.35), transparent 60%), linear-gradient(120deg, #17110f 0%, #0c0d10 60%); }
+  .promo-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; padding: 56px; width: 100%; }
+  .promo h2 { margin-top: 18px; font-size: clamp(34px, 5vw, 56px); }
+  .promo p { color: #cfc9bf; margin-top: 18px; max-width: 546px; }
+  .countdown { margin-top: 32px; }
+  .countdown small { font-size: 11px; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; }
+  .timer { display: flex; gap: 12px; margin-top: 12px; }
+  .timer div { background: rgba(12,13,16,.7); border: 1px solid var(--line); border-radius: 12px; width: 92px; padding: 14px 0; text-align: center; }
+  .timer b { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 36px; color: var(--accent); }
+  .timer span { font-size: 10px; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+  .promo-card { background: rgba(12,13,16,.7); border: 1px solid var(--line); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px); }
+  .promo-card ul { list-style: none; display: grid; gap: 14px; margin: 18px 0 24px; }
+  .promo-card li { display: flex; justify-content: space-between; gap: 16px; font-size: 14px; border-bottom: 1px dashed var(--line); padding-bottom: 12px; }
+  .promo-card li span:first-child { color: var(--muted); text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
+
+  /* ---------- Value props ---------- */
+  .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .value { padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+  .value .v-ico { width: 48px; height: 48px; border-radius: 12px; background: rgba(216,180,106,.12); color: var(--accent); display: grid; place-items: center; }
+  .value h3 { margin-top: 26px; font-family: "Inter", system-ui, sans-serif; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+  .value p { margin-top: 12px; color: var(--muted); font-size: 14px; }
+
+  /* ---------- Reviews ---------- */
+  .reviews { background: var(--surface); }
+  .reviews-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+  .rating { text-align: right; }
+  .rating .stars { color: var(--accent); letter-spacing: 4px; font-size: 16px; }
+  .rating strong { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 40px; }
+  .rating small { color: var(--muted); font-size: 12px; }
+  .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .review { padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg); display: flex; flex-direction: column; gap: 18px; }
+  .review .stars { color: var(--accent); letter-spacing: 3px; font-size: 13px; display: flex; justify-content: space-between; }
+  .review .stars small { color: var(--muted); letter-spacing: .04em; font-size: 12px; }
+  .review blockquote { font-family: "Playfair Display", Georgia, serif; font-size: 18px; line-height: 1.5; font-style: italic; }
+  .review .photo { height: 144px; border-radius: 10px; background: linear-gradient(135deg, #252932, #101216); border: 1px solid var(--line); }
+  .reviewer { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #15120a; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+  .reviewer b { display: block; font-size: 14px; }
+  .reviewer small { color: var(--muted); font-size: 12px; }
+
+  /* ---------- VIP club ---------- */
+  .vip { padding: 88px 0; }
+  .vip-card { position: relative; overflow: hidden; border-radius: 20px; border: 1px solid var(--line); background: linear-gradient(120deg, #15171c 0%, #0c0d10 70%); }
+  .vip-card::before { content: ""; position: absolute; right: -60px; top: -60px; width: 384px; height: 384px; border-radius: 50%; background: radial-gradient(circle, rgba(216,180,106,.25), transparent 70%); }
+  .vip-inner { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; padding: 56px; align-items: center; }
+  .vip h2 { margin-top: 18px; }
+  .vip-copy p { margin-top: 18px; color: var(--muted); max-width: 540px; }
+  .perks { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 22px; color: var(--text); font-size: 13px; }
+  .perks span { display: inline-flex; align-items: center; gap: 8px; }
+  .perks svg { color: var(--accent); }
+  .form-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+  .form-card .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  form#vipForm { margin-top: 18px; display: grid; gap: 12px; }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .field input { height: 46px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; color: var(--text); outline: none; transition: border-color .15s; }
+  .field input::placeholder { color: #5d616b; }
+  .field input:focus { border-color: var(--accent); }
+  .submit { margin-top: 8px; width: 100%; height: 48px; }
+  .form-msg { min-height: 20px; font-size: 13px; margin-top: 4px; text-align: center; }
+  .form-msg.ok { color: #7fd69b; }
+  .form-msg.err { color: #ff8a7a; }
+
+  /* ---------- Footer ---------- */
+  footer.site { border-top: 1px solid var(--line); padding: 56px 0 32px; background: #08090b; }
+  .foot-top { display: grid; grid-template-columns: 1.2fr 2fr; gap: 48px; align-items: start; }
+  .foot-news h3 { font-family: "Inter", system-ui, sans-serif; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .foot-news p { color: var(--muted); font-size: 14px; margin-top: 10px; max-width: 420px; }
+  .news-row { display: flex; gap: 10px; margin-top: 18px; max-width: 448px; }
+  .news-row input { flex: 1; height: 42px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; color: var(--text); outline: none; min-width: 0; }
+  .news-row button { height: 42px; padding: 0 18px; }
+  .foot-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .foot-cols h4 { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .foot-cols a { display: block; font-size: 13px; letter-spacing: .06em; color: var(--muted); padding: 5px 0; text-transform: uppercase; }
+  .foot-cols a:hover { color: var(--text); }
+  .foot-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--muted); }
+  .pay { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pay span { border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; font-size: 11px; letter-spacing: .08em; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1024px) {
+    nav.main { display: none; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .promo-inner, .vip-inner, .foot-top { grid-template-columns: 1fr; }
+    .values { grid-template-columns: repeat(2, 1fr); }
+    .review-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .menu-toggle { display: grid; }
+    .stats { grid-template-columns: 1fr; }
+    .stat + .stat { border-left: none; border-top: 1px solid var(--line); }
+    .cats { grid-template-columns: 1fr; }
+    .values { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .promo-inner, .vip-inner { padding: 28px; }
+    .timer div { width: 74px; }
+    .foot-cols { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 64px 0 40px; }
+    section.block, .vip { padding: 64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site">
+  <div class="wrap header-inner">
+    <a href="#top" class="logo"><b>MOTRIX</b><span>DieCast Collectibles</span></a>
+    <nav class="main">
+      <a href="#categories">Home</a>
+      <a href="#categories">Catalogue</a>
+      <a href="#products">New</a>
+      <a href="#promo">Vault</a>
+      <a href="#why">Heritage</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#vip">Club</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <a href="#vip" class="btn btn-sm" style="height:40px;padding:0 16px;">Join Club</a>
+      <div class="cart">
+        <button class="icon-btn" aria-label="Cart">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+        </button>
+        <span class="cart-count">0</span>
+      </div>
+      <button class="icon-btn menu-toggle" aria-label="Menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Curated Diecast Vault · India</span>
+      <h1>Collect Your <em>Dream Cars</em> in Miniature.</h1>
+      <p class="lead">Discover, Collect and Own Your Favourite Dream Cars in Miniature. Rare casting vaults, pristine card art, and museum-grade blister protection delivered to discerning connoisseurs across India.</p>
+      <div class="hero-ctas">
+        <a href="#categories" class="btn btn-primary">Shop the Vault</a>
+        <a href="#vip" class="btn">
+          Join the Club
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-ico">
+            <svg width="22" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+          </div>
+          <div><strong>1,200+</strong><small>Authentic castings</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico">
+            <svg width="16" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6"/></svg>
+          </div>
+          <div><strong>48 hrs</strong><small>Armored dispatch</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico">
+            <svg width="22" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l9-5 9 5-9 5z"/><path d="M3 8v8l9 5 9-5V8"/></svg>
+          </div>
+          <div><strong>4.9 / 5</strong><small>Verified collector rating</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED CATEGORIES ============ -->
+  <section class="block" id="categories">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Vitrine</span>
+          <h2>Featured Categories</h2>
+        </div>
+        <p>Six curated vaults, from everyday mainline staples to limited-run allocations.</p>
+      </div>
+
+      <div class="cats">
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">Mainline</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Hot Wheels Mainline</h3><span>240+ items</span></div>
+            <p>Worldwide casting staples, authentic street racers, and iconic fantasy speedsters.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">Premium</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Premium Hot Wheels</h3><span>180+ items</span></div>
+            <p>Real Riders authentic rubber compounds with weighted full Metal/Metal castings.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">Series</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Elevated Series</h3><span>96 items</span></div>
+            <p>Elevated intermediate series with themed card art and distinct wheel deco sets.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">Transport</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Team Transport</h3><span>64 items</span></div>
+            <p>Iconic paddock transporter trucks paired with period-correct competition racers.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">RLC</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Hot Wheels RLC</h3><span>52 items</span></div>
+            <p>Red Line Club limited allocations with opening hoods, Spectraflame finishes and numbered plates.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+        <a class="cat" href="#products">
+          <div class="cat-img"><span class="cat-tag">Import</span></div>
+          <div class="cat-body">
+            <div class="cat-title"><h3>Hot Wheels Imported</h3><span>70 items</span></div>
+            <p>Hard-to-source Japan domestic market cards and US Target/Kroger store exclusives.</p>
+            <span class="cat-link">Explore →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEST-SELLERS ============ -->
+  <section class="block products" id="products">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Best Sellers</span>
+          <h2>Best-Selling Products</h2>
+        </div>
+        <a href="#products" class="btn">View all →</a>
+      </div>
+
+      <div class="product-grid">
+        <article class="product">
+          <div class="p-img">
+            <div class="p-badges"><span class="badge hot">Limited</span><span class="badge">RLC</span></div>
+            <button class="wish" aria-label="Add to wishlist">♡</button>
+          </div>
+          <div class="p-body">
+            <div class="p-meta"><span class="stars">★★★★★</span><span>42 reviews</span></div>
+            <h3 class="p-title">1969 Chevy C10 RLC Pink Edition</h3>
+            <div class="p-sub">Scale 1:64 • Spectraflame Pink</div>
+            <div class="p-foot">
+              <div class="price">₹2,499</div>
+              <button class="btn btn-primary btn-sm">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="product">
+          <div class="p-img">
+            <div class="p-badges"><span class="badge">Premium</span></div>
+            <button class="wish" aria-label="Add to wishlist">♡</button>
+          </div>
+          <div class="p-body">
+            <div class="p-meta"><span class="stars">★★★★★</span><span>31 reviews</span></div>
+            <h3 class="p-title">Nissan Skyline GT-R (BNR34) Advan</h3>
+            <div class="p-sub">Scale 1:64 • Full Metal Chassis</div>
+            <div class="p-foot">
+              <div class="price">₹1,899</div>
+              <button class="btn btn-primary btn-sm">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="product">
+          <div class="p-img">
+            <div class="p-badges"><span class="badge hot">New</span></div>
+            <button class="wish" aria-label="Add to wishlist">♡</button>
+          </div>
+          <div class="p-body">
+            <div class="p-meta"><span class="stars">★★★★★</span><span>27 reviews</span></div>
+            <h3 class="p-title">Porsche 911 GT3 RS Premium</h3>
+            <div class="p-sub">Scale 1:64 • Real Riders Tires</div>
+            <div class="p-foot">
+              <div class="price">₹2,199</div>
+              <button class="btn btn-primary btn-sm">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="product">
+          <div class="p-img">
+            <div class="p-badges"><span class="badge">Import</span></div>
+            <button class="wish" aria-label="Add to wishlist">♡</button>
+          </div>
+          <div class="p-body">
+            <div class="p-meta"><span class="stars">★★★★★</span><span>19 reviews</span></div>
+            <h3 class="p-title">Ferrari F40 Competizione Spec</h3>
+            <div class="p-sub">Scale 1:43 • Italy Import Edition</div>
+            <div class="p-foot">
+              <div class="price">₹3,299</div>
+              <button class="btn btn-primary btn-sm">Add to cart</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROMO BANNER WITH COUNTDOWN ============ -->
+  <section class="block" id="promo" style="padding-top:48px;">
+    <div class="wrap">
+      <div class="promo">
+        <div class="promo-inner">
+          <div>
+            <span class="eyebrow">Drop Sequence</span>
+            <h2>Your Dream Cars, Now Within Reach.</h2>
+            <p>Limited vault releases open on a timer. Once the count hits zero, allocations are gone for good. Armored packaging and insured dispatch included.</p>
+            <div class="countdown">
+              <small>Drop sequence countdown</small>
+              <div class="timer" id="timer">
+                <div><b id="d">00</b><span>Days</span></div>
+                <div><b id="h">00</b><span>Hours</span></div>
+                <div><b id="m">00</b><span>Minutes</span></div>
+                <div><b id="s">00</b><span>Seconds</span></div>
+              </div>
+            </div>
+            <div style="margin-top:32px;">
+              <a href="#products" class="btn btn-primary">Secure Your Allocation →</a>
+            </div>
+          </div>
+          <div class="promo-card">
+            <span class="eyebrow">Drop details</span>
+            <ul>
+              <li><span>Release</span><span>Vault Allocation Wave 4</span></li>
+              <li><span>Allocation</span><span>Numbered · 500 units</span></li>
+              <li><span>Packaging</span><span>Acrylic protector case</span></li>
+              <li><span>Dispatch</span><span>Same-day, insured</span></li>
+            </ul>
+            <a href="#vip" class="btn" style="width:100%;">Get early access</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY CHOOSE MOTRIX ============ -->
+  <section class="block" id="why" style="padding-top:48px;">
+    <div class="wrap">
+      <div class="sec-head" style="justify-content:center;text-align:center;flex-direction:column;align-items:center;">
+        <span class="eyebrow">Our Promise</span>
+        <h2>Why Choose MOTRIX?</h2>
+        <p style="max-width:672px;">Collector-grade care at every step, from sourcing to the doorstep.</p>
+      </div>
+
+      <div class="values">
+        <div class="value">
+          <div class="v-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>100% Authentic Collectibles</h3>
+          <p>Direct Mattel authorized channel sourcing. Every piece inspected for genuine holographic base stamps, factory tamper-evident seals, and uncracked blister edges.</p>
+        </div>
+        <div class="value">
+          <div class="v-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16"/></svg></div>
+          <h3>Premium Mint-Card Quality</h3>
+          <p>Guaranteed unbent card corners, zero soft j-hooks, and zero bubble spider-webbing. Packaged standard with transparent archival PET blister cases on premium lines.</p>
+        </div>
+        <div class="value">
+          <div class="v-ico"><svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
+          <h3>Secure Online Payments</h3>
+          <p>Bank-grade 256-bit SSL encrypted checkout powered by Razorpay. Seamless zero-fee transactions with UPI (GPay, PhonePe, Paytm), RuPay, Visa, Mastercard, and Net Banking.</p>
+        </div>
+        <div class="value">
+          <div class="v-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h12v9H3zM15 11h3l3 3v3h-6z"/><circle cx="7" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg></div>
+          <h3>Armored Box Packaging</h3>
+          <p>Custom engineered 5-ply corrugated outer shippers lined with heavy-duty air-bubble armor and crush-proof corner pillars. Built to survive rigorous domestic transit.</p>
+        </div>
+        <div class="value">
+          <div class="v-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16v10H8l-4 4z"/></svg></div>
+          <h3>Reliable Express Shipping</h3>
+          <p>Same-day packaging dispatch with fully insured priority courier partners (BlueDart, Delhivery Air). Real-time SMS &amp; WhatsApp GPS waypoint milestone tracking.</p>
+        </div>
+        <div class="value">
+          <div class="v-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 116 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".6"/></svg></div>
+          <h3>Collector Concierge Support</h3>
+          <p>Diecast car nerds at your service. Instant answers to casting variants, production year decos, and special request allocation searches via live concierge chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="block reviews" id="reviews">
+    <div class="wrap">
+      <div class="reviews-top">
+        <div>
+          <span class="eyebrow">Verified Collector Reviews</span>
+          <h2 style="margin-top:18px;">What Our Collectors Say</h2>
+        </div>
+        <div class="rating">
+          <div class="stars">★★★★★</div>
+          <strong>4.9 / 5</strong>
+          <small>From 1,200+ verified orders</small>
+        </div>
+      </div>
+
+      <div class="review-grid">
+        <article class="review">
+          <div class="stars"><span>★★★★★</span><small>Verified purchase</small></div>
+          <blockquote>"The armored packaging is no joke! Received my RLC Chevy C10 in Bangalore without even a hairline bend on the card corner. The complimentary acrylic protector case made my week."</blockquote>
+          <div class="photo" role="img" aria-label="Collector photo"></div>
+          <div class="reviewer"><span class="avatar">AR</span><div><b>Arjun R.</b><small>Bangalore</small></div></div>
+        </article>
+        <article class="review">
+          <div class="stars"><span>★★★★★</span><small>Verified purchase</small></div>
+          <blockquote>"Finally an authentic diecast store in India that doesn't overcharge for Team Transport sets. Sourced the Advan Skyline GT-R with pristine tampo printing. 10/10 service."</blockquote>
+          <div class="photo" role="img" aria-label="Collector photo"></div>
+          <div class="reviewer"><span class="avatar">SM</span><div><b>Sameer M.</b><small>Mumbai</small></div></div>
+        </article>
+        <article class="review">
+          <div class="stars"><span>★★★★★</span><small>Verified purchase</small></div>
+          <blockquote>"The concierge chat answered my question about casting chassis revisions within 3 minutes on WhatsApp. Sourced the Ferrari F40 1:43 import without custom clearance headaches."</blockquote>
+          <div class="photo" role="img" aria-label="Collector photo"></div>
+          <div class="reviewer"><span class="avatar">PK</span><div><b>Priya K.</b><small>Hyderabad</small></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIP COLLECTOR CLUB (FORM) ============ -->
+  <section class="vip" id="vip">
+    <div class="wrap">
+      <div class="vip-card">
+        <div class="vip-inner">
+          <div class="vip-copy">
+            <span class="eyebrow">VIP Collector Club</span>
+            <h2>Join the MOTRIX Club</h2>
+            <p>Get first access to vault drops, priority restock alerts, and concierge support on rare allocations. Registration is free and takes less than a minute.</p>
+            <div class="perks">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Early drop access</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Restock alerts</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Member pricing</span>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="label">Priority Registration Ledger</div>
+            <form id="vipForm" novalidate>
+              <div class="field">
+                <label for="name">Collector full name</label>
+                <input id="name" name="name" type="text" placeholder="Your full name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="email">Email address for drop pings</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="phone">WhatsApp number (optional, for SMS alerts)</label>
+                <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" />
+              </div>
+              <button type="submit" class="btn btn-primary submit" id="submitBtn">Join the club</button>
+              <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-news">
+        <h3>Join the MOTRIX Club</h3>
+        <p>Drop alerts and new allocations, straight to your inbox.</p>
+        <div class="news-row">
+          <input type="email" placeholder="collector@domain.com" aria-label="Email for newsletter" />
+          <button class="btn btn-primary" type="button">Subscribe</button>
+        </div>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <h4>Archives</h4>
+          <a href="#categories">Full catalogue</a>
+          <a href="#products">New allocations</a>
+          <a href="#promo">Vault releases</a>
+          <a href="#products">Scale series</a>
+        </div>
+        <div>
+          <h4>Atelier</h4>
+          <a href="#why">Heritage</a>
+          <a href="#why">Client support</a>
+          <a href="#why">Zamac verification</a>
+          <a href="#why">Design careers</a>
+        </div>
+        <div>
+          <h4>Compliance</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of service</a>
+          <a href="#">Shipping &amp; vault duty</a>
+          <a href="#">Collector terms</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MOTRIX DieCast. All rights reserved.</span>
+      <div class="pay">
+        <span>UPI</span><span>RuPay</span><span>VISA</span><span>Mastercard</span><span>Net Banking</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- Countdown (demo: drop opens in 2 days 4 hours from page load) ---------- */
+  (function () {
+    const end = Date.now() + (2 * 86400000) + (4 * 3600000);
+    const pad = n => String(n).padStart(2, "0");
+    function tick() {
+      let diff = Math.max(0, end - Date.now());
+      const d = Math.floor(diff / 86400000); diff %= 86400000;
+      const h = Math.floor(diff / 3600000); diff %= 3600000;
+      const m = Math.floor(diff / 60000); diff %= 60000;
+      const s = Math.floor(diff / 1000);
+      document.getElementById("d").textContent = pad(d);
+      document.getElementById("h").textContent = pad(h);
+      document.getElementById("m").textContent = pad(m);
+      document.getElementById("s").textContent = pad(s);
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  /* ---------- VIP form -> Google Apps Script ---------- */
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXP58NrFT3POMgRRghciUWmgKRJiKeQ9HhBKInlGZUDcHqMcyYdqhLRtaTvq_u526oVQ/exec";
+
+  const form = document.getElementById("vipForm");
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("formMsg");
+
+  function showSuccess() {
+    msg.className = "form-msg ok";
+    msg.textContent = "Welcome to the MOTRIX Club. We will be in touch.";
+    form.reset();
+    btn.disabled = false;
+    btn.textContent = "Join the club";
+  }
+
+  function showError() {
+    msg.className = "form-msg err";
+    msg.textContent = "Something went wrong. Please try again.";
+    btn.disabled = false;
+    btn.textContent = "Join the club";
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    if (!name || !email) {
+      msg.className = "form-msg err";
+      msg.textContent = "Please enter your name and email.";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Joining…";
+    msg.className = "form-msg";
+    msg.textContent = "";
+
+    const url = SCRIPT_URL + "?" + new URLSearchParams({ name, email, phone });
+
+    fetch(url, { method: "GET", mode: "no-cors" })
+      .then(() => showSuccess())
+      .catch(() => showError());
+  });
+</script>
+
+</body>
+</html>
